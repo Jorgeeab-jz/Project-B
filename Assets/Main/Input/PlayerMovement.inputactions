@@ -92,6 +92,34 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "Actions",
+            "id": "a5c53f23-89dc-4ee9-8b04-ccb085bdc3ad",
+            "actions": [
+                {
+                    "name": "Cast",
+                    "type": "Button",
+                    "id": "3a819c3a-56a1-420b-9639-e73b5fd57721",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "6e048198-ba51-461c-bd1e-1a8241cb9cd2",
+                    "path": "<Keyboard>/f",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Cast",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []

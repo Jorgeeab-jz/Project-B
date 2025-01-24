@@ -13,18 +13,35 @@ using Unity.VisualScripting;
 public class CharacterController : MonoBehaviour
 {
     [Header("References")]
+
+    //Player
     [SerializeField] private Rigidbody2D _rigidBody;
     [SerializeField] private CapsuleCollider2D _collider;
     [SerializeField] private PlayerStats _stats;
     [SerializeField] private InputActionReference _movementInput;
     [SerializeField] private InputActionReference _jumpInput;
+    [SerializeField] private InputActionReference _castInput;
     [SerializeField] private CinemachineVirtualCamera _camera;
+
+    //Bubble
+    [SerializeField] private GameObject _bubblePrefab;
+    [SerializeField] private Transform _CastPosition;
+    private Bubble _castedBubble;
+
 
     [Space(10)]
     [Header("Values")]
+
+    //Player
     [SerializeField] private float _lookRightCameraValue;
     [SerializeField] private float _lookLeftCameraValue;
     [SerializeField] private float _cameraChangeSpeed;
+
+    //Bubbles
+    [SerializeField] private float _maxBubbleScale;
+    [SerializeField] private float _minBubbleScale;
+    [SerializeField] private float _blowBubbleTime;
+    private bool _isCasting = false;
 
     private FrameInput _frameInput;
     private Vector2 _frameVelocity;
@@ -56,24 +73,31 @@ public class CharacterController : MonoBehaviour
     {
         _movementInput.action.performed += GatherMovementInput;
         _jumpInput.action.performed += GatherJumpInput;
+        _castInput.action.performed += CastBubble;
+
 
         _movementInput.action.canceled += GatherMovementInput;
         _jumpInput.action.canceled += GatherJumpInput;
+        _castInput.action.canceled += CastBubble;
 
         _movementInput.action.Enable();
         _jumpInput.action.Enable();
+        _castInput.action.Enable();
     }
 
     private void OnDisable()
     {
         _movementInput.action.Disable();
         _jumpInput.action.Disable();
+        _castInput.action.Disable();
 
         _movementInput.action.performed -= GatherMovementInput;
         _jumpInput.action.performed -= GatherJumpInput;
+        _castInput.action.performed -= CastBubble;
 
         _movementInput.action.canceled -= GatherMovementInput;
         _jumpInput.action.canceled -= GatherJumpInput;
+        _castInput.action.canceled -= CastBubble;
     }
 
     private void GatherJumpInput(InputAction.CallbackContext context)
@@ -108,7 +132,7 @@ public class CharacterController : MonoBehaviour
             _frameInput.Move.y = Mathf.Abs(_frameInput.Move.y) < _stats.VerticalDeadZoneThreshold ? 0 : Mathf.Sign(_frameInput.Move.y);
         }
 
-       ChangeCameraScreen(input.x);
+        ChangeCameraScreen(input.x);
 
     }
 
@@ -250,18 +274,54 @@ public class CharacterController : MonoBehaviour
         if (input > 0)
         {
 
-            DOTween.To(()=> transposer.m_ScreenX, x=> transposer.m_ScreenX = x, _lookRightCameraValue, _cameraChangeSpeed);
+            DOTween.To(() => transposer.m_ScreenX, x => transposer.m_ScreenX = x, _lookRightCameraValue, _cameraChangeSpeed);
 
         }
         else if (input < 0)
         {
 
-            DOTween.To(()=> transposer.m_ScreenX, x=> transposer.m_ScreenX = x, _lookLeftCameraValue, _cameraChangeSpeed);
-            
+            DOTween.To(() => transposer.m_ScreenX, x => transposer.m_ScreenX = x, _lookLeftCameraValue, _cameraChangeSpeed);
+
         }
     }
 
-    
+
+
+    #endregion
+
+    #region Bubbles
+
+    private void CastBubble(InputAction.CallbackContext context)
+    {
+
+        if (context.ReadValueAsButton())
+        {
+            _castedBubble = Instantiate(_bubblePrefab, _CastPosition).GetComponent<Bubble>();
+            _castedBubble.transform.DOScale(_minBubbleScale, 0.05f);
+
+            _castedBubble.transform.DOLocalMoveX(1f, _blowBubbleTime);
+            _castedBubble.transform.DOScale(_maxBubbleScale, _blowBubbleTime);
+
+        }
+        else
+        {
+            float minimumBubbleSize = _maxBubbleScale - 0.3f;
+
+            _castedBubble.transform.DOKill();
+            _castedBubble.LaunchBubble(Vector2.right);
+
+            if (_castedBubble.transform.localScale.x < minimumBubbleSize)
+            {
+                _castedBubble.PopBubble();
+            }
+
+
+        }
+
+        Debug.Log(context.ReadValueAsButton() ? "Casted Pressed" : "Casted Released");
+
+
+    }
 
     #endregion
 
