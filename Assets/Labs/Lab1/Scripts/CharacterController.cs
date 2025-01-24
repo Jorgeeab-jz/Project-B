@@ -1,9 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using DG.Tweening;
+using Unity.VisualScripting;
+
 
 [RequireComponent(typeof(Rigidbody2D), typeof(Collider2D))]
 public class CharacterController : MonoBehaviour
@@ -14,6 +18,13 @@ public class CharacterController : MonoBehaviour
     [SerializeField] private PlayerStats _stats;
     [SerializeField] private InputActionReference _movementInput;
     [SerializeField] private InputActionReference _jumpInput;
+    [SerializeField] private CinemachineVirtualCamera _camera;
+
+    [Space(10)]
+    [Header("Values")]
+    [SerializeField] private float _lookRightCameraValue;
+    [SerializeField] private float _lookLeftCameraValue;
+    [SerializeField] private float _cameraChangeSpeed;
 
     private FrameInput _frameInput;
     private Vector2 _frameVelocity;
@@ -66,11 +77,11 @@ public class CharacterController : MonoBehaviour
     }
 
     private void GatherJumpInput(InputAction.CallbackContext context)
-    { 
+    {
         _frameInput.JumpDown = context.ReadValueAsButton();
         _frameInput.JumpHeld = context.ReadValueAsButton();
 
-        
+
         if (_frameInput.JumpDown)
         {
             _jumpToConsume = true;
@@ -78,7 +89,7 @@ public class CharacterController : MonoBehaviour
         }
 
         Debug.Log("Gathered Jump Input");
-        
+
     }
 
     private void GatherMovementInput(InputAction.CallbackContext context)
@@ -88,7 +99,7 @@ public class CharacterController : MonoBehaviour
         _frameInput = new FrameInput
         {
             Move = input,
-            
+
         };
 
         if (_stats.SnapInput)
@@ -97,7 +108,8 @@ public class CharacterController : MonoBehaviour
             _frameInput.Move.y = Mathf.Abs(_frameInput.Move.y) < _stats.VerticalDeadZoneThreshold ? 0 : Mathf.Sign(_frameInput.Move.y);
         }
 
-        
+       ChangeCameraScreen(input.x);
+
     }
 
     private void FixedUpdate()
@@ -118,10 +130,6 @@ public class CharacterController : MonoBehaviour
 
     private void CheckCollisions()
     {
-        if(_grounded) 
-        {
-            Debug.Log("Character is grounded");
-        }
 
         Physics2D.queriesStartInColliders = false;
 
@@ -151,7 +159,7 @@ public class CharacterController : MonoBehaviour
 
         Physics2D.queriesStartInColliders = _cachedQueryStartInColliders;
 
-        
+
     }
 
     #endregion
@@ -231,6 +239,31 @@ public class CharacterController : MonoBehaviour
     #endregion
 
     private void ApplyMovement() => _rigidBody.velocity = _frameVelocity;
+
+    #region Camera
+
+    private void ChangeCameraScreen(float input)
+    {
+        CinemachineFramingTransposer transposer = _camera.GetCinemachineComponent<CinemachineFramingTransposer>();
+        float value = transposer.m_ScreenX;
+
+        if (input > 0)
+        {
+
+            DOTween.To(()=> transposer.m_ScreenX, x=> transposer.m_ScreenX = x, _lookRightCameraValue, _cameraChangeSpeed);
+
+        }
+        else if (input < 0)
+        {
+
+            DOTween.To(()=> transposer.m_ScreenX, x=> transposer.m_ScreenX = x, _lookLeftCameraValue, _cameraChangeSpeed);
+            
+        }
+    }
+
+    
+
+    #endregion
 
 }
 
