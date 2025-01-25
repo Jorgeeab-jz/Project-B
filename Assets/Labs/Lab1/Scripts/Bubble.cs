@@ -25,40 +25,7 @@ public class Bubble : MonoBehaviour
         GameObject.Destroy(gameObject);
     }
 
-    public BubbleType GetBubbleType(int bubbleSum)
-    {
-        BubbleType type = BubbleType.normal;
-
-        switch (bubbleSum)
-        {
-            case 1:
-                type = BubbleType.fire;
-                break;
-
-            case 2:
-                type = BubbleType.steam;
-                break;
-
-            case 3:
-                type = BubbleType.water;
-                break;
-
-            case 4:
-                type = BubbleType.mud;
-                break;
-
-            case 5:
-                type = BubbleType.earth;
-                break;
-
-            case 6:
-                type = BubbleType.lava;
-                break;
-        }
-
-        return type;
-
-    }
+    
 
 }
 

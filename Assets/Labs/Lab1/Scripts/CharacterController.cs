@@ -305,7 +305,7 @@ public class CharacterController : MonoBehaviour
         }
         else
         {
-            float minimumBubbleSize = _maxBubbleScale - 0.3f;
+            float minimumBubbleSize = _maxBubbleScale - 0.4f;
 
             _castedBubble.transform.DOKill();
             _castedBubble.LaunchBubble(Vector2.right);
