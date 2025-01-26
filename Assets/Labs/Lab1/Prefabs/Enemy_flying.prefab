@@ -123,7 +123,7 @@ GameObject:
   - component: {fileID: 4325852588954386139}
   m_Layer: 8
   m_Name: Enemy_flying
-  m_TagString: Untagged
+  m_TagString: Reset
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -243,9 +243,13 @@ MonoBehaviour:
   moveSpeed: 4
   raycastDistance: 0.6
   health: 10
-  rb: {fileID: 1230833288147408185}
   _playerTransform: {fileID: 0}
   _transformChannel: {fileID: 11400000, guid: 1ab28004ba1ca7a4a9574d5786c00808, type: 2}
+  _animator: {fileID: 2052911772002474511}
+  _resetChannel: {fileID: 11400000, guid: e12299204dbbc9145b8aaa001deec623, type: 2}
+  _currentHealth: 0
+  _receivedDamage: 0
+  rb: {fileID: 1230833288147408185}
 --- !u!50 &1230833288147408185
 Rigidbody2D:
   serializedVersion: 4

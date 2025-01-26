@@ -27,6 +27,8 @@ public class CharacterController : MonoBehaviour
     [SerializeField] private InputActionReference _castInput;
     [SerializeField] private CinemachineVirtualCamera _camera;
     [SerializeField] private BubbleManager _bubbleManager;
+    [SerializeField] private Transform _spawnPosition;
+    [SerializeField] private StarGrabChannel _resetChannel;
 
     //Bubble
     [SerializeField] private GameObject[] _bubblePrefabs;
@@ -358,6 +360,19 @@ public class CharacterController : MonoBehaviour
     }
 
     #endregion
+
+    public void Reset() 
+    {
+        transform.position = _spawnPosition.position;
+        _resetChannel?.onInteraction.Invoke();
+    }
+
+    private void OnCollisionEnter2D(Collision2D other) {
+        if(other.gameObject.tag == "Reset")
+        {
+            Reset();
+        }
+    }
 
 }
 

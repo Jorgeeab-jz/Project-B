@@ -131,7 +131,7 @@ Transform:
   m_GameObject: {fileID: 6920668173274510958}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.09, y: 0.16, z: 0}
+  m_LocalPosition: {x: 0.253, y: 0.121, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -162,7 +162,7 @@ Transform:
   m_GameObject: {fileID: 7945654747309088163}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.04, y: 0.16, z: 0}
+  m_LocalPosition: {x: 0.20299819, y: 0.12099996, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -197,6 +197,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1065428026606647471, guid: e570d39272f442041a3f8196a24ed73c, type: 3}
     - target: {fileID: 1023116614068407093, guid: c35f830a23eb9944a9e9e4310b4dccd9, type: 3}
+      propertyPath: _resetChannel
+      value: 
+      objectReference: {fileID: 11400000, guid: e12299204dbbc9145b8aaa001deec623, type: 2}
+    - target: {fileID: 1023116614068407093, guid: c35f830a23eb9944a9e9e4310b4dccd9, type: 3}
       propertyPath: _blowBubbleTime
       value: 0.7
       objectReference: {fileID: 0}
@@ -230,7 +234,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1782326668118860512, guid: c35f830a23eb9944a9e9e4310b4dccd9, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.31
+      value: -6.51
       objectReference: {fileID: 0}
     - target: {fileID: 1782326668118860512, guid: c35f830a23eb9944a9e9e4310b4dccd9, type: 3}
       propertyPath: m_LocalPosition.z
@@ -290,7 +294,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9204910811838097444, guid: c35f830a23eb9944a9e9e4310b4dccd9, type: 3}
       propertyPath: m_GravityScale
-      value: 0.1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9204910811838097444, guid: c35f830a23eb9944a9e9e4310b4dccd9, type: 3}
       propertyPath: m_CollisionDetection

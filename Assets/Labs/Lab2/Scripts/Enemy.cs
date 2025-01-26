@@ -14,6 +14,7 @@ public class Enemy : MonoBehaviour, IEnemy
     [SerializeField] protected Transform _playerTransform;
     [SerializeField] protected PlayerTransformChannel _transformChannel;
     [SerializeField] protected Animator _animator;
+    [SerializeField] private StarGrabChannel _resetChannel;
 
     protected AIDestinationSetter _aiDestination;
     protected AIPath _aiComponent;
@@ -22,10 +23,22 @@ public class Enemy : MonoBehaviour, IEnemy
 
     private int moveDirection = 1; // 1 derecha, -1 izquierda
     [SerializeField] protected Rigidbody2D rb;
+    private CircleCollider2D collider2D;
 
-    private void Awake() 
+    private void Awake()
     {
-        
+
+    }
+
+    private void OnEnable()
+    {
+        collider2D = GetComponent<CircleCollider2D>();
+        _resetChannel.onInteraction += KillEnemy;
+    }
+
+    private void OnDisable()
+    {
+        _resetChannel.onInteraction -= KillEnemy;
     }
 
     void Update()
@@ -63,28 +76,28 @@ public class Enemy : MonoBehaviour, IEnemy
 
         Debug.Log("[Enemy]: Getting damage");
 
-        
+
         switch (bubble)
         {
             case BubbleType.electric:
                 _aiComponent.maxSpeed = 0.1f;
                 DOTween.To(() => _aiComponent.maxSpeed, x => _aiComponent.maxSpeed = x, 0.5f, 1.5f).OnComplete(() => _aiComponent.maxSpeed = moveSpeed);
-                
+
                 break;
 
             case BubbleType.fire:
                 DOTween.To(() => _aiComponent.maxSpeed, x => _aiComponent.maxSpeed = x, 0.5f, 0.2f).OnComplete(() => _aiComponent.maxSpeed = moveSpeed);
-                
+
                 break;
 
             case BubbleType.air:
                 DOTween.To(() => _aiComponent.maxSpeed, x => _aiComponent.maxSpeed = x, 0.5f, 0.05f).OnComplete(() => _aiComponent.maxSpeed = moveSpeed);
-                
+
                 break;
 
             case BubbleType.lava:
                 DOTween.To(() => _aiComponent.maxSpeed, x => _aiComponent.maxSpeed = x, 0.5f, 0.3f).OnComplete(() => _aiComponent.maxSpeed = moveSpeed);
-                
+
                 break;
 
         }
@@ -92,7 +105,7 @@ public class Enemy : MonoBehaviour, IEnemy
 
     }
 
-    public void GetDamageAmmount(int damage) 
+    public void GetDamageAmmount(int damage)
     {
         _currentHealth -= damage;
     }
@@ -106,14 +119,16 @@ public class Enemy : MonoBehaviour, IEnemy
     }
 
     protected void KillEnemy()
-    {
+    {   
+        collider2D.enabled = false;
         StartCoroutine(KillAnimation());
     }
 
     IEnumerator KillAnimation()
     {
+
         _animator.SetInteger("Health", _currentHealth);
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.5f);
         GameObject.Destroy(gameObject);
     }
 
