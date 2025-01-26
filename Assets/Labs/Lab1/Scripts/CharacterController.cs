@@ -7,6 +7,7 @@ using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using DG.Tweening;
 using Unity.VisualScripting;
+using System.Linq;
 
 
 [RequireComponent(typeof(Rigidbody2D), typeof(Collider2D))]
@@ -15,6 +16,9 @@ public class CharacterController : MonoBehaviour
     [Header("References")]
 
     //Player
+
+    [SerializeField] private PlayerTransformChannel _transformChannel;
+    [SerializeField] private Animator _animator;
     [SerializeField] private Rigidbody2D _rigidBody;
     [SerializeField] private CapsuleCollider2D _collider;
     [SerializeField] private PlayerStats _stats;
@@ -26,6 +30,7 @@ public class CharacterController : MonoBehaviour
     //Bubble
     [SerializeField] private GameObject _bubblePrefab;
     [SerializeField] private Transform _CastPosition;
+    [SerializeField] private Transform _aimPoint;
     private Bubble _castedBubble;
 
 
@@ -59,7 +64,7 @@ public class CharacterController : MonoBehaviour
 
     private void Awake()
     {
-
+        _transformChannel.SetTransform(transform);
         _cachedQueryStartInColliders = Physics2D.queriesStartInColliders;
     }
 
@@ -118,7 +123,14 @@ public class CharacterController : MonoBehaviour
 
     private void GatherMovementInput(InputAction.CallbackContext context)
     {
+        
+
         Vector2 input = context.ReadValue<Vector2>();
+
+        if(!_isCasting)
+        {
+            _animator.SetBool("IsRunning", input.x != 0);
+        }
 
         _frameInput = new FrameInput
         {
@@ -132,13 +144,15 @@ public class CharacterController : MonoBehaviour
             _frameInput.Move.y = Mathf.Abs(_frameInput.Move.y) < _stats.VerticalDeadZoneThreshold ? 0 : Mathf.Sign(_frameInput.Move.y);
         }
 
-        ChangeCameraScreen(input.x);
+        ChangeLookDirection(input.x);
 
     }
 
     private void FixedUpdate()
     {
         CheckCollisions();
+
+        if (_isCasting) return;
 
         HandleJump();
         HandleDirection();
@@ -249,11 +263,21 @@ public class CharacterController : MonoBehaviour
     private void HandleGravity()
     {
         if (_grounded && _frameVelocity.y <= 0f)
-        {
+        {   
+            _animator.SetBool("IsFalling", false);
+            _animator.SetBool("IsJumping", false);
             _frameVelocity.y = _stats.GroundingForce;
         }
         else
         {
+            if (_frameVelocity.y > 0f) 
+            {
+                _animator.SetBool("IsJumping", true);
+            }else if (_frameVelocity.y < 0f) 
+            {
+                _animator.SetBool("IsFalling", true);
+            }
+            
             var inAirGravity = _stats.FallAcceleration;
             if (_endedJumpEarly && _frameVelocity.y > 0) inAirGravity *= _stats.JumpEndEarlyGravityModifier;
             _frameVelocity.y = Mathf.MoveTowards(_frameVelocity.y, -_stats.MaxFallSpeed, inAirGravity * Time.fixedDeltaTime);
@@ -266,22 +290,18 @@ public class CharacterController : MonoBehaviour
 
     #region Camera
 
-    private void ChangeCameraScreen(float input)
+    private void ChangeLookDirection(float input)
     {
-        CinemachineFramingTransposer transposer = _camera.GetCinemachineComponent<CinemachineFramingTransposer>();
-        float value = transposer.m_ScreenX;
 
         if (input > 0)
         {
-
-            DOTween.To(() => transposer.m_ScreenX, x => transposer.m_ScreenX = x, _lookRightCameraValue, _cameraChangeSpeed);
+            transform.localScale = new Vector3(1,1,1);
 
         }
         else if (input < 0)
         {
-
-            DOTween.To(() => transposer.m_ScreenX, x => transposer.m_ScreenX = x, _lookLeftCameraValue, _cameraChangeSpeed);
-
+            transform.localScale = new Vector3(-1,1,1);
+        
         }
     }
 
@@ -295,7 +315,12 @@ public class CharacterController : MonoBehaviour
     {
 
         if (context.ReadValueAsButton())
-        {
+        {   
+        
+            _isCasting = true;
+            _animator.SetBool("IsCasting",true);
+            _rigidBody.velocity = Vector2.zero;
+            
             _castedBubble = Instantiate(_bubblePrefab, _CastPosition).GetComponent<Bubble>();
             _castedBubble.transform.DOScale(_minBubbleScale, 0.05f);
 
@@ -304,18 +329,18 @@ public class CharacterController : MonoBehaviour
 
         }
         else
-        {
+        {   
+            Vector2 direction = _CastPosition.position - _aimPoint.position; 
+
             float minimumBubbleSize = _maxBubbleScale - 0.4f;
+            float scaleAbsolute = Math.Abs(_castedBubble.transform.localScale.x);
 
             _castedBubble.transform.DOKill();
-            _castedBubble.LaunchBubble(Vector2.right);
+            _castedBubble.LaunchBubble(direction);
 
-            if (_castedBubble.transform.localScale.x < minimumBubbleSize)
-            {
-                _castedBubble.PopBubble();
-            }
-
-
+            _animator.SetBool("IsCasting",false);
+            _isCasting = false;
+            
         }
 
         Debug.Log(context.ReadValueAsButton() ? "Casted Pressed" : "Casted Released");

@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3547624681876342686
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7889343686560576612}
+  - component: {fileID: 6967122855307281389}
+  m_Layer: 0
+  m_Name: BubbleManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7889343686560576612
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3547624681876342686}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -109.8766, y: -13.310714, z: -0.055250075}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6967122855307281389
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3547624681876342686}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42651018f1d6e014e98e015a0443f83b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rotateSelectionInput: {fileID: -3830842593750581846, guid: bf3cb19535c528e4080d2082784c8402, type: 3}
+  _selectableBubbleTypes: 010000000200000003000000
+  _bubbleSprites:
+  - {fileID: 21300000, guid: afbd3b9aecb7939409a8756f6b76faea, type: 3}
+  - {fileID: 21300000, guid: 068ac5679212a4640b8bc103e3080ba4, type: 3}
+  - {fileID: 21300000, guid: 15a54a45cf35f99469d56c059a485310, type: 3}
+  _selectionDisplay: {fileID: 0}
+  _bubbleValue1: 0
+  _bubbleValue2: 0
+  _selectedBubble: 0
