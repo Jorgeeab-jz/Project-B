@@ -2414,6 +2414,18 @@ PrefabInstance:
       propertyPath: _bubblePrefab
       value: 
       objectReference: {fileID: 6009948827263409230, guid: 3aa185a74fbc6274e892c47e27f47763, type: 3}
+    - target: {fileID: 3529699564929855446, guid: 846b74c722b6b5848849cd9d7787c913, type: 3}
+      propertyPath: _audioClips.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3529699564929855446, guid: 846b74c722b6b5848849cd9d7787c913, type: 3}
+      propertyPath: _audioClips.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: cc5c39413b3420041a9ab886062f7fd5, type: 3}
+    - target: {fileID: 3529699564929855446, guid: 846b74c722b6b5848849cd9d7787c913, type: 3}
+      propertyPath: _audioClips.Array.data[1]
+      value: 
+      objectReference: {fileID: 8300000, guid: 9b1a43ee1bde6f44ea6ad66649a0acff, type: 3}
     - target: {fileID: 5822118579831956198, guid: 846b74c722b6b5848849cd9d7787c913, type: 3}
       propertyPath: m_Name
       value: Player

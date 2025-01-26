@@ -32,6 +32,9 @@ public class CharacterController : MonoBehaviour
     [SerializeField] private Transform _aimPoint;
     private Bubble _castedBubble;
 
+    //Audio
+    [SerializeField] private AudioClip[] _audioClips;
+
 
     [Space(10)]
     [Header("Values")]
@@ -222,6 +225,8 @@ public class CharacterController : MonoBehaviour
         if (_grounded || CanUseCoyote) ExecuteJump();
 
         Debug.Log("Jump Handled");
+        
+        SoundFXManager.instance.PlaySoundFXClip(_audioClips[1], transform, 1);
 
         _jumpToConsume = false;
     }
@@ -248,10 +253,12 @@ public class CharacterController : MonoBehaviour
         {
             var deceleration = _grounded ? _stats.GroundDeceleration : _stats.AirDeceleration;
             _frameVelocity.x = Mathf.MoveTowards(_frameVelocity.x, 0, deceleration * Time.fixedDeltaTime);
+            SoundFXManager.instance.PlaySoundFXClip(_audioClips[0], transform, 1);
         }
         else
         {
             _frameVelocity.x = Mathf.MoveTowards(_frameVelocity.x, _frameInput.Move.x * _stats.MaxSpeed, _stats.Acceleration * Time.fixedDeltaTime);
+            SoundFXManager.instance.PlaySoundFXClip(_audioClips[0], transform, 1);
         }
     }
 
