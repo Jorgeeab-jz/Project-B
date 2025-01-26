@@ -17,6 +17,7 @@ public class CharacterController : MonoBehaviour
 
     //Player
 
+    [SerializeField] private PlayerTransformChannel _transformChannel;
     [SerializeField] private Animator _animator;
     [SerializeField] private Rigidbody2D _rigidBody;
     [SerializeField] private CapsuleCollider2D _collider;
@@ -63,7 +64,7 @@ public class CharacterController : MonoBehaviour
 
     private void Awake()
     {
-
+        _transformChannel.SetTransform(transform);
         _cachedQueryStartInColliders = Physics2D.queriesStartInColliders;
     }
 
