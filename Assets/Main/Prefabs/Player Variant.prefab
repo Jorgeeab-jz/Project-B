@@ -73,9 +73,9 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: d6a8038685505214bb9ae40c47942b2e, type: 3}
-  m_Color: {r: 0.735849, g: 0.735849, b: 0.735849, a: 1}
+  m_Color: {r: 0.7735849, g: 0.7735849, b: 0.7735849, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -209,6 +209,10 @@ PrefabInstance:
       value: 0.01
       objectReference: {fileID: 0}
     - target: {fileID: 1023116614068407093, guid: c35f830a23eb9944a9e9e4310b4dccd9, type: 3}
+      propertyPath: _transformChannel
+      value: 
+      objectReference: {fileID: 11400000, guid: 1ab28004ba1ca7a4a9574d5786c00808, type: 2}
+    - target: {fileID: 1023116614068407093, guid: c35f830a23eb9944a9e9e4310b4dccd9, type: 3}
       propertyPath: _cameraChangeSpeed
       value: 1
       objectReference: {fileID: 0}
@@ -222,11 +226,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1782326668118860512, guid: c35f830a23eb9944a9e9e4310b4dccd9, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -18.28
+      value: -48.18953
       objectReference: {fileID: 0}
     - target: {fileID: 1782326668118860512, guid: c35f830a23eb9944a9e9e4310b4dccd9, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.72
+      value: -2.31
       objectReference: {fileID: 0}
     - target: {fileID: 1782326668118860512, guid: c35f830a23eb9944a9e9e4310b4dccd9, type: 3}
       propertyPath: m_LocalPosition.z
@@ -279,6 +283,18 @@ PrefabInstance:
     - target: {fileID: 7927045826473510405, guid: c35f830a23eb9944a9e9e4310b4dccd9, type: 3}
       propertyPath: m_Name
       value: Player Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 9204910811838097444, guid: c35f830a23eb9944a9e9e4310b4dccd9, type: 3}
+      propertyPath: m_Mass
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9204910811838097444, guid: c35f830a23eb9944a9e9e4310b4dccd9, type: 3}
+      propertyPath: m_GravityScale
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9204910811838097444, guid: c35f830a23eb9944a9e9e4310b4dccd9, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3217802029589759002, guid: c35f830a23eb9944a9e9e4310b4dccd9, type: 3}
