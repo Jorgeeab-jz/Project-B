@@ -386,8 +386,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioClips:
-  - {fileID: 8300000, guid: 86f1462a4bf66b64593bdf26abe1bd32, type: 3}
-  gameSceneName: SampleScene
+  - {fileID: 8300000, guid: bfaf62dedc98dd64c8a3e453fbf3aada, type: 3}
+  gameSceneName: Lab
   optionsPanel: {fileID: 1994139730}
 --- !u!4 &143900297
 Transform:
@@ -1289,9 +1289,9 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 682471657143432507, guid: 18dc06e39b0053e4cb1f86d9218336f4, type: 2}
-  m_audioClip: {fileID: 8300000, guid: 2e5c75725276537448795d0408f64b4b, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 583756460a888bb49b7727ef3913de24, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.399
   m_Pitch: 1
   Loop: 1
   Mute: 0

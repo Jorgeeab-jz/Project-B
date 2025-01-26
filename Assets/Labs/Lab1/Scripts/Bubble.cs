@@ -8,6 +8,7 @@ public class Bubble : MonoBehaviour
 {
     [SerializeField] protected float _bubbleForce = 5f;
     [SerializeField] private float _minimunSize;
+    [SerializeField] private AudioClip[] audiclips;
     
     private Rigidbody2D _rb;
 
@@ -16,6 +17,7 @@ public class Bubble : MonoBehaviour
 
     public void LaunchBubble(Vector2 direction)
     {
+        SoundFXManager.instance.PlaySoundFXClip(audiclips[1], transform, 1);
         _rb = GetComponent<Rigidbody2D>();
 
         _rb.velocity = direction.normalized * _bubbleForce;

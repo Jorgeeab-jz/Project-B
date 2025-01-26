@@ -28,6 +28,18 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 0.990566
       objectReference: {fileID: 0}
+    - target: {fileID: 4589240361517019333, guid: eea5c44f27fb7f34a96e687061d99a57, type: 3}
+      propertyPath: audiclips.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4589240361517019333, guid: eea5c44f27fb7f34a96e687061d99a57, type: 3}
+      propertyPath: audiclips.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: faa08d2e4dad28f4ca656b27a2e391a5, type: 3}
+    - target: {fileID: 4589240361517019333, guid: eea5c44f27fb7f34a96e687061d99a57, type: 3}
+      propertyPath: audiclips.Array.data[1]
+      value: 
+      objectReference: {fileID: 8300000, guid: 67bcd449bb9fa7c429e3870eafcdf25c, type: 3}
     - target: {fileID: 5238182552904709105, guid: eea5c44f27fb7f34a96e687061d99a57, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.2

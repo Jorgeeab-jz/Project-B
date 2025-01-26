@@ -2410,6 +2410,10 @@ PrefabInstance:
       propertyPath: _camera
       value: 
       objectReference: {fileID: 1756008136}
+    - target: {fileID: 3529699564929855446, guid: 846b74c722b6b5848849cd9d7787c913, type: 3}
+      propertyPath: _bubblePrefab
+      value: 
+      objectReference: {fileID: 6009948827263409230, guid: 3aa185a74fbc6274e892c47e27f47763, type: 3}
     - target: {fileID: 5822118579831956198, guid: 846b74c722b6b5848849cd9d7787c913, type: 3}
       propertyPath: m_Name
       value: Player
