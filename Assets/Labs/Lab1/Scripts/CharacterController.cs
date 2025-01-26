@@ -26,9 +26,10 @@ public class CharacterController : MonoBehaviour
     [SerializeField] private InputActionReference _jumpInput;
     [SerializeField] private InputActionReference _castInput;
     [SerializeField] private CinemachineVirtualCamera _camera;
+    [SerializeField] private BubbleManager _bubbleManager;
 
     //Bubble
-    [SerializeField] private GameObject _bubblePrefab;
+    [SerializeField] private GameObject[] _bubblePrefabs;
     [SerializeField] private Transform _CastPosition;
     [SerializeField] private Transform _aimPoint;
     private Bubble _castedBubble;
@@ -46,6 +47,7 @@ public class CharacterController : MonoBehaviour
     [SerializeField] private float _maxBubbleScale;
     [SerializeField] private float _minBubbleScale;
     [SerializeField] private float _blowBubbleTime;
+    [SerializeField] private int _currentGum;
     private bool _isCasting = false;
 
     private FrameInput _frameInput;
@@ -321,22 +323,29 @@ public class CharacterController : MonoBehaviour
             _animator.SetBool("IsCasting",true);
             _rigidBody.velocity = Vector2.zero;
             
-            _castedBubble = Instantiate(_bubblePrefab, _CastPosition).GetComponent<Bubble>();
-            _castedBubble.transform.DOScale(_minBubbleScale, 0.05f);
-
-            _castedBubble.transform.DOLocalMoveX(1f, _blowBubbleTime);
-            _castedBubble.transform.DOScale(_maxBubbleScale, _blowBubbleTime);
-
+            _castedBubble = Instantiate(_bubbleManager.SelectedBubble, _CastPosition).GetComponent<Bubble>();
+            _castedBubble?.InflateBubble();
         }
         else
         {   
+            /*
+            if(_castedBubble == null) 
+            {
+                _isCasting = false;
+                _animator.SetBool("IsCasting",false);
+                return;
+            }
+            */
+            _isCasting = false;
             Vector2 direction = _CastPosition.position - _aimPoint.position; 
 
-            float minimumBubbleSize = _maxBubbleScale - 0.4f;
-            float scaleAbsolute = Math.Abs(_castedBubble.transform.localScale.x);
-
-            _castedBubble.transform.DOKill();
-            _castedBubble.LaunchBubble(direction);
+            if (_castedBubble.IsReady())
+            {
+                _castedBubble.LaunchBubble(direction);
+            }else
+            {
+                _castedBubble.Pop();
+            }
 
             _animator.SetBool("IsCasting",false);
             _isCasting = false;

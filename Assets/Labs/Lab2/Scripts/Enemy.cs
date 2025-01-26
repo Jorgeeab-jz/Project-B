@@ -2,22 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class Enemy : MonoBehaviour, IEnemy
 {
     public float moveSpeed = 2f;
     public float raycastDistance = 0.6f;
 
-    private int moveDirection = 1; // 1 derecha, -1 izquierda
-    private Rigidbody2D rb;
+    [SerializeField] protected int health;
 
-    void Start()
+    private int moveDirection = 1; // 1 derecha, -1 izquierda
+    [SerializeField] protected Rigidbody2D rb;
+
+    private void Awake() 
     {
-        rb = GetComponent<Rigidbody2D>();
+        
     }
 
     void Update()
     {
-        // Detectar bordes o paredes para cambiar dirección
+        // Detectar bordes o paredes para cambiar direcciï¿½n
         RaycastHit2D hitGround = Physics2D.Raycast(
             transform.position,
             Vector2.right * moveDirection,
@@ -27,7 +29,7 @@ public class Enemy : MonoBehaviour
 
         if (hitGround.collider != null)
         {
-            // Cambiar dirección al encontrar un obstáculo
+            // Cambiar direcciï¿½n al encontrar un obstï¿½culo
             moveDirection *= -1;
         }
 
@@ -37,12 +39,21 @@ public class Enemy : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        // Lógica de colisión con jugador
+        // Lï¿½gica de colisiï¿½n con jugador
         if (collision.gameObject.CompareTag("Player"))
         {
-            // Aquí puedes agregar lógica de daño al jugador
-            Debug.Log("Colisión con jugador");
+            // Aquï¿½ puedes agregar lï¿½gica de daï¿½o al jugador
+            Debug.Log("Colisiï¿½n con jugador");
         }
     }
+
+    public virtual void GetDamage(Bubble bubble)
+    {
+        
+    }
+
+    
+
+    
 }
 
