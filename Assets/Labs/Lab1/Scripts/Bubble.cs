@@ -8,6 +8,7 @@ using DG.Tweening;
 public class Bubble : MonoBehaviour, IBubble
 {
     [SerializeField] protected float _bubbleForce = 5f;
+    [SerializeField] private int _damage;
     [SerializeField] private float _minimunSize;
     [SerializeField] private float _maximunSize;
     [SerializeField] private float _blowTime;
@@ -25,47 +26,55 @@ public class Bubble : MonoBehaviour, IBubble
     {
         IEnemy enemy = other.gameObject.GetComponent<IEnemy>();
         if (enemy == null) return;
-        enemy.GetDamage(this);
+        enemy.GetDamage(_bubbleType);
+        enemy.GetDamageAmmount(_damage);
         Debug.Log("Bubble collisioned");
 
         Pop();
     }
 
     public void LaunchBubble(Vector2 direction)
-    {   
-        if(_isLaunched) return;
-        _rb = GetComponent<Rigidbody2D>();
+    {
 
-        _rb.velocity = direction.normalized * _bubbleForce;
+        transform.DOKill();
 
-        transform.SetParent(null);
-        _isLaunched = true;
         if (!IsReady())
-        {   
-            Debug.Log($"[Bubble]: minimun: {_minimunSize}, current: {Mathf.Abs(transform.localScale.x)}, max: {_maximunSize}");
+        {
             Pop();
+            return;
+        }
+        else
+        {
+            _rb = GetComponent<Rigidbody2D>();
+
+            _rb.velocity = direction.normalized * _bubbleForce;
+
+            transform.SetParent(null);
+            _isLaunched = true;
         }
 
-        
+
+
+
     }
 
     public void Pop()
-    {   
+    {
         transform.DOKill();
         GameObject.Destroy(gameObject);
     }
 
     public bool IsReady()
-    {
-        return Mathf.Abs(transform.localScale.x) >= _minimunSize; 
+    {   
+        return Mathf.Abs(transform.localScale.x) >= _minimunSize;
     }
 
-    public void InflateBubble() 
+    public void InflateBubble()
     {
         transform.DOScale(_minimunSize, 0.05f);
 
         transform.DOLocalMoveX(1f, _blowTime);
-        transform.DOScale(_maximunSize, _blowTime).OnComplete(()=> transform.DOKill());
+        transform.DOScale(_maximunSize, _blowTime).OnComplete(() => transform.DOKill());
 
     }
 

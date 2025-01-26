@@ -328,14 +328,14 @@ public class CharacterController : MonoBehaviour
         }
         else
         {   
-            /*
+            
             if(_castedBubble == null) 
             {
                 _isCasting = false;
                 _animator.SetBool("IsCasting",false);
                 return;
             }
-            */
+            
             _isCasting = false;
             Vector2 direction = _CastPosition.position - _aimPoint.position; 
 

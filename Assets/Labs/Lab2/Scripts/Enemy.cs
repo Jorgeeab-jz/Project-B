@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using Pathfinding;
 using UnityEngine;
+using DG.Tweening;
 
 public class Enemy : MonoBehaviour, IEnemy
 {
@@ -8,6 +10,15 @@ public class Enemy : MonoBehaviour, IEnemy
     public float raycastDistance = 0.6f;
 
     [SerializeField] protected int health;
+
+    [SerializeField] protected Transform _playerTransform;
+    [SerializeField] protected PlayerTransformChannel _transformChannel;
+    [SerializeField] protected Animator _animator;
+
+    protected AIDestinationSetter _aiDestination;
+    protected AIPath _aiComponent;
+    [SerializeField] protected int _currentHealth;
+    [SerializeField] protected int _receivedDamage;
 
     private int moveDirection = 1; // 1 derecha, -1 izquierda
     [SerializeField] protected Rigidbody2D rb;
@@ -47,13 +58,77 @@ public class Enemy : MonoBehaviour, IEnemy
         }
     }
 
-    public virtual void GetDamage(Bubble bubble)
+    private void GetHit(BubbleType bubble)
     {
+
+        Debug.Log("[Enemy]: Getting damage");
+
         
+        switch (bubble)
+        {
+            case BubbleType.electric:
+                _aiComponent.maxSpeed = 0.1f;
+                DOTween.To(() => _aiComponent.maxSpeed, x => _aiComponent.maxSpeed = x, 0.5f, 1.5f).OnComplete(() => _aiComponent.maxSpeed = moveSpeed);
+                
+                break;
+
+            case BubbleType.fire:
+                DOTween.To(() => _aiComponent.maxSpeed, x => _aiComponent.maxSpeed = x, 0.5f, 0.2f).OnComplete(() => _aiComponent.maxSpeed = moveSpeed);
+                
+                break;
+
+            case BubbleType.air:
+                DOTween.To(() => _aiComponent.maxSpeed, x => _aiComponent.maxSpeed = x, 0.5f, 0.05f).OnComplete(() => _aiComponent.maxSpeed = moveSpeed);
+                
+                break;
+
+            case BubbleType.lava:
+                DOTween.To(() => _aiComponent.maxSpeed, x => _aiComponent.maxSpeed = x, 0.5f, 0.3f).OnComplete(() => _aiComponent.maxSpeed = moveSpeed);
+                
+                break;
+
+        }
+
+
     }
 
-    
+    public void GetDamageAmmount(int damage) 
+    {
+        _currentHealth -= damage;
+    }
 
-    
+    protected void CheckHealth()
+    {
+        if (_currentHealth <= 0)
+        {
+            KillEnemy();
+        }
+    }
+
+    protected void KillEnemy()
+    {
+        StartCoroutine(KillAnimation());
+    }
+
+    IEnumerator KillAnimation()
+    {
+        _animator.SetInteger("Health", _currentHealth);
+        yield return new WaitForSeconds(1f);
+        GameObject.Destroy(gameObject);
+    }
+
+    IEnumerator DamageAnimation()
+    {
+        _animator.SetFloat("Damage", 1f);
+        yield return new WaitForSeconds(0.1f);
+        _animator.SetFloat("Damage", -1f);
+    }
+
+    public void GetDamage(BubbleType bubble)
+    {
+        StartCoroutine(DamageAnimation());
+        GetHit(bubble);
+        CheckHealth();
+    }
 }
 

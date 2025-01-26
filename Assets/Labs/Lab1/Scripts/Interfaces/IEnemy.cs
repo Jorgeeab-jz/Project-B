@@ -4,5 +4,6 @@ using UnityEngine;
 
 public interface IEnemy 
 {
-    public void GetDamage(Bubble bubble);
+    public void GetDamage(BubbleType bubble);
+    public void GetDamageAmmount(int damage);
 }
