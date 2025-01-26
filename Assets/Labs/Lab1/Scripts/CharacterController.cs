@@ -55,6 +55,12 @@ public class CharacterController : MonoBehaviour
     private Vector2 _frameVelocity;
     private bool _cachedQueryStartInColliders;
 
+    private AudioSource _footstepAudioSource;
+    private float _footstepTimer = 0f;
+    [SerializeField] private float _footstepInterval = 0.3f; // Ajusta este valor para controlar la frecuencia de los pasos
+    [SerializeField] private AudioClip _footstepAudioClip; // Añade este campo en el inspector
+
+
     #region Interface
 
     public Vector2 FrameInput => _frameInput.Move;
@@ -144,7 +150,7 @@ public class CharacterController : MonoBehaviour
         if (_stats.SnapInput)
         {
             _frameInput.Move.x = Mathf.Abs(_frameInput.Move.x) < _stats.HorizontalDeadZoneThreshold ? 0 : Mathf.Sign(_frameInput.Move.x);
-            _frameInput.Move.y = Mathf.Abs(_frameInput.Move.y) < _stats.VerticalDeadZoneThreshold ? 0 : Mathf.Sign(_frameInput.Move.y);
+            _frameInput.Move.y = Mathf.Abs(_frameInput.Move.y) < _stats.VerticalDeadZoneThreshold ? 0 : Mathf.Sign(_frameInput.Move.y); 
         }
 
         ChangeLookDirection(input.x);
@@ -226,8 +232,6 @@ public class CharacterController : MonoBehaviour
         if (_grounded || CanUseCoyote) ExecuteJump();
 
         Debug.Log("Jump Handled");
-        
-        SoundFXManager.instance.PlaySoundFXClip(_audioClips[1], transform, 1);
 
         _jumpToConsume = false;
     }
@@ -240,6 +244,8 @@ public class CharacterController : MonoBehaviour
         _coyoteUsable = false;
         _frameVelocity.y = _stats.JumpPower;
         Jumped?.Invoke();
+
+        SoundFXManager.instance.PlaySoundFXClip(_audioClips[1], transform, 1);
 
         Debug.Log("Tried to exectute jump");
     }
@@ -254,12 +260,26 @@ public class CharacterController : MonoBehaviour
         {
             var deceleration = _grounded ? _stats.GroundDeceleration : _stats.AirDeceleration;
             _frameVelocity.x = Mathf.MoveTowards(_frameVelocity.x, 0, deceleration * Time.fixedDeltaTime);
-            SoundFXManager.instance.PlaySoundFXClip(_audioClips[0], transform, 1);
+
+            // Detener reproducción de pasos cuando no se mueve
+            if (_footstepAudioSource != null)
+            {
+                _footstepAudioSource.Stop();
+            }
+
         }
         else
         {
             _frameVelocity.x = Mathf.MoveTowards(_frameVelocity.x, _frameInput.Move.x * _stats.MaxSpeed, _stats.Acceleration * Time.fixedDeltaTime);
-            SoundFXManager.instance.PlaySoundFXClip(_audioClips[0], transform, 1);
+
+            // Reproducir sonido de pasos
+            _footstepTimer += Time.fixedDeltaTime;
+            if (_grounded && _footstepTimer >= _footstepInterval)
+            {
+                SoundFXManager.instance.PlaySoundFXClip(_audioClips[0], transform, 0.5f);
+                _footstepTimer = 0f;
+            }
+
         }
     }
 
