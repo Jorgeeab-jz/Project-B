@@ -10,7 +10,31 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1819233659774867495, guid: eea5c44f27fb7f34a96e687061d99a57, type: 3}
       propertyPath: m_Name
-      value: Bubble Variant
+      value: Bubble_Electro
+      objectReference: {fileID: 0}
+    - target: {fileID: 4589240361517019333, guid: eea5c44f27fb7f34a96e687061d99a57, type: 3}
+      propertyPath: _damage
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4589240361517019333, guid: eea5c44f27fb7f34a96e687061d99a57, type: 3}
+      propertyPath: _gumIcon
+      value: 
+      objectReference: {fileID: 21300000, guid: 9a9ae3114e292ea428636a52020ca8c7, type: 3}
+    - target: {fileID: 4589240361517019333, guid: eea5c44f27fb7f34a96e687061d99a57, type: 3}
+      propertyPath: _blowTime
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4589240361517019333, guid: eea5c44f27fb7f34a96e687061d99a57, type: 3}
+      propertyPath: _bubbleType
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4589240361517019333, guid: eea5c44f27fb7f34a96e687061d99a57, type: 3}
+      propertyPath: _maximunSize
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4589240361517019333, guid: eea5c44f27fb7f34a96e687061d99a57, type: 3}
+      propertyPath: _minimunSize
+      value: 0.52
       objectReference: {fileID: 0}
     - target: {fileID: 5238182552904709105, guid: eea5c44f27fb7f34a96e687061d99a57, type: 3}
       propertyPath: m_LocalPosition.x

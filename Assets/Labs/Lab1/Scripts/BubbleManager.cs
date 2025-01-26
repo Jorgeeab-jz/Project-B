@@ -6,12 +6,13 @@ using UnityEngine.UI;
 using DG.Tweening;
 
 public class BubbleManager : MonoBehaviour
-{   
+{
     [Header("References")]
     [SerializeField] private InputActionReference _rotateSelectionInput;
-    [SerializeField] private BubbleType[] _selectableBubbleTypes;
-    [SerializeField] private Sprite[] _bubbleSprites;
+    [SerializeField] private GameObject[] _bubblesPrefabs;
+    [SerializeField] private Sprite _bubbleSprite;
     [SerializeField] private Image _selectionDisplay;
+    [SerializeField] private GameObject _selectedBubblePrefab;
 
 
     [Space(10)]
@@ -21,14 +22,18 @@ public class BubbleManager : MonoBehaviour
     [SerializeField] private int _selectedBubble = 0;
 
 
-    private void OnEnable() {
+    public GameObject SelectedBubble { get { return _selectedBubblePrefab; } }
+
+    private void OnEnable()
+    {
         DisplaySelectedBubble(_selectedBubble);
 
         _rotateSelectionInput.action.performed += RotateSelection;
         _rotateSelectionInput.action.Enable();
     }
 
-    private void OnDisable() {
+    private void OnDisable()
+    {
         _rotateSelectionInput.action.performed -= RotateSelection;
         _rotateSelectionInput.action.Disable();
     }
@@ -41,24 +46,27 @@ public class BubbleManager : MonoBehaviour
     {
         _selectedBubble++;
 
-        if (_selectedBubble == _selectableBubbleTypes.Length) _selectedBubble = 0;
+        if (_selectedBubble == _bubblesPrefabs.Length) _selectedBubble = 0;
+
 
         DisplaySelectedBubble(_selectedBubble);
 
     }
 
-    private void DisplaySelectedBubble(int index) 
-    {   
-        _selectionDisplay.rectTransform.DOShakeScale(0.2f, new Vector3(0.5f,0.2f), 6, 80);
-        _selectionDisplay.sprite = _bubbleSprites[index];
+    private void DisplaySelectedBubble(int index)
+    {
+        _selectedBubblePrefab = _bubblesPrefabs[_selectedBubble];
+        _selectionDisplay.sprite = _bubblesPrefabs[_selectedBubble].GetComponent<Bubble>().Sprite;
+        _selectionDisplay.rectTransform.DOShakeScale(0.2f, new Vector3(0.5f, 0.2f), 6, 80);
+
     }
 
-    private int SlotSum() 
+    private int SlotSum()
     {
         return _bubbleValue1 + _bubbleValue2;
     }
 
-
+    
     public BubbleType GetBubbleType(int bubbleSum)
     {
         BubbleType type = BubbleType.normal;

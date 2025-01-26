@@ -26,9 +26,12 @@ public class CharacterController : MonoBehaviour
     [SerializeField] private InputActionReference _jumpInput;
     [SerializeField] private InputActionReference _castInput;
     [SerializeField] private CinemachineVirtualCamera _camera;
+    [SerializeField] private BubbleManager _bubbleManager;
+    [SerializeField] private Transform _spawnPosition;
+    [SerializeField] private StarGrabChannel _resetChannel;
 
     //Bubble
-    [SerializeField] private GameObject _bubblePrefab;
+    [SerializeField] private GameObject[] _bubblePrefabs;
     [SerializeField] private Transform _CastPosition;
     [SerializeField] private Transform _aimPoint;
     private Bubble _castedBubble;
@@ -49,6 +52,7 @@ public class CharacterController : MonoBehaviour
     [SerializeField] private float _maxBubbleScale;
     [SerializeField] private float _minBubbleScale;
     [SerializeField] private float _blowBubbleTime;
+    [SerializeField] private int _currentGum;
     private bool _isCasting = false;
 
     private FrameInput _frameInput;
@@ -80,6 +84,13 @@ public class CharacterController : MonoBehaviour
     private void Update()
     {
         _time += Time.deltaTime;
+
+        if(_isCasting)
+        {
+            Vector2 mouseDirection = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
+
+            ChangeLookDirection(mouseDirection.x);
+        }
 
     }
 
@@ -342,28 +353,37 @@ public class CharacterController : MonoBehaviour
     {
 
         if (context.ReadValueAsButton())
-        {   
-        
+        {     
             _isCasting = true;
             _animator.SetBool("IsCasting",true);
             _rigidBody.velocity = Vector2.zero;
             
-            _castedBubble = Instantiate(_bubblePrefab, _CastPosition).GetComponent<Bubble>();
-            _castedBubble.transform.DOScale(_minBubbleScale, 0.05f);
-
-            _castedBubble.transform.DOLocalMoveX(1f, _blowBubbleTime);
-            _castedBubble.transform.DOScale(_maxBubbleScale, _blowBubbleTime);
-
+            _castedBubble = Instantiate(_bubbleManager.SelectedBubble, _CastPosition).GetComponent<Bubble>();
+            _castedBubble?.InflateBubble();
         }
         else
         {   
-            Vector2 direction = _CastPosition.position - _aimPoint.position; 
+            
+            Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            mousePosition.z = 0f;
 
-            float minimumBubbleSize = _maxBubbleScale - 0.4f;
-            float scaleAbsolute = Math.Abs(_castedBubble.transform.localScale.x);
+            if(_castedBubble == null) 
+            {
+                _isCasting = false;
+                _animator.SetBool("IsCasting",false);
+                return;
+            }
+            
+            _isCasting = false;
+            Vector2 direction = mousePosition - _CastPosition.position; 
 
-            _castedBubble.transform.DOKill();
-            _castedBubble.LaunchBubble(direction);
+            if (_castedBubble.IsReady())
+            {
+                _castedBubble.LaunchBubble(direction);
+            }else
+            {
+                _castedBubble.Pop();
+            }
 
             _animator.SetBool("IsCasting",false);
             _isCasting = false;
@@ -376,6 +396,19 @@ public class CharacterController : MonoBehaviour
     }
 
     #endregion
+
+    public void Reset() 
+    {
+        transform.position = _spawnPosition.position;
+        _resetChannel?.onInteraction.Invoke();
+    }
+
+    private void OnCollisionEnter2D(Collision2D other) {
+        if(other.gameObject.tag == "Reset")
+        {
+            Reset();
+        }
+    }
 
 }
 

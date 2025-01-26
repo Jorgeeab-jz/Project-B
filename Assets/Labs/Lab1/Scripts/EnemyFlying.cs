@@ -1,25 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using Pathfinding;
 using UnityEngine;
 
 
-public class Enemy : MonoBehaviour
+public class EnemyFlying : Enemy, IEnemy
 {
-    [SerializeField] private Transform _playerTransform;
-    [SerializeField] private PlayerTransformChannel _transformChannel;
-
-    private AIDestinationSetter _aiDestination;
+    
 
     private void Awake()
     {
+        _currentHealth = health;
         _aiDestination = GetComponent<AIDestinationSetter>();
+        _aiComponent = GetComponent<AIPath>();
+
     }
 
     private void Start()
     {
         _playerTransform = _transformChannel.GetPlayerTransform;
         _aiDestination.target = _playerTransform;
+        _aiComponent.maxSpeed = moveSpeed;
     }
 
     public void Update()
@@ -33,4 +35,8 @@ public class Enemy : MonoBehaviour
             transform.localScale = new Vector3(1, 1, 1);
         }
     }
+
+    
+
+    
 }
