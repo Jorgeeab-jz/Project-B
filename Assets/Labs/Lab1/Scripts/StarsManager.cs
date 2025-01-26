@@ -29,7 +29,7 @@ public class StarsManager : MonoBehaviour
     }
 
     private void Start() {
-        InvokeRepeating("SpawnEnemy", 3f, 10f);
+        InvokeRepeating("SpawnEnemy", 3f, 8f);
     }
 
     public void SpawnStar()
