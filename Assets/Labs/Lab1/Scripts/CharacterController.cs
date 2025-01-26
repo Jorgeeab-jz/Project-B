@@ -76,6 +76,13 @@ public class CharacterController : MonoBehaviour
     {
         _time += Time.deltaTime;
 
+        if(_isCasting)
+        {
+            Vector2 mouseDirection = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
+
+            ChangeLookDirection(mouseDirection.x);
+        }
+
     }
 
     private void OnEnable()
@@ -319,8 +326,7 @@ public class CharacterController : MonoBehaviour
     {
 
         if (context.ReadValueAsButton())
-        {   
-        
+        {     
             _isCasting = true;
             _animator.SetBool("IsCasting",true);
             _rigidBody.velocity = Vector2.zero;
@@ -331,6 +337,9 @@ public class CharacterController : MonoBehaviour
         else
         {   
             
+            Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            mousePosition.z = 0f;
+
             if(_castedBubble == null) 
             {
                 _isCasting = false;
@@ -339,7 +348,7 @@ public class CharacterController : MonoBehaviour
             }
             
             _isCasting = false;
-            Vector2 direction = _CastPosition.position - _aimPoint.position; 
+            Vector2 direction = mousePosition - _CastPosition.position; 
 
             if (_castedBubble.IsReady())
             {
