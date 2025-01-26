@@ -240,7 +240,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 387a660dd89928b4a92051c0379043e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 3.5
+  moveSpeed: 2.8
   raycastDistance: 0.6
   health: 10
   _playerTransform: {fileID: 0}

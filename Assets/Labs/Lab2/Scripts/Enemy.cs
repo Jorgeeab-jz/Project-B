@@ -86,16 +86,19 @@ public class Enemy : MonoBehaviour, IEnemy
                 break;
 
             case BubbleType.fire:
+                _aiComponent.maxSpeed = 0.1f;
                 DOTween.To(() => _aiComponent.maxSpeed, x => _aiComponent.maxSpeed = x, 0.5f, 0.2f).OnComplete(() => _aiComponent.maxSpeed = moveSpeed);
 
                 break;
 
             case BubbleType.air:
+                _aiComponent.maxSpeed = 0.1f;
                 DOTween.To(() => _aiComponent.maxSpeed, x => _aiComponent.maxSpeed = x, 0.5f, 0.05f).OnComplete(() => _aiComponent.maxSpeed = moveSpeed);
 
                 break;
 
             case BubbleType.lava:
+                _aiComponent.maxSpeed = 0.1f;
                 DOTween.To(() => _aiComponent.maxSpeed, x => _aiComponent.maxSpeed = x, 0.5f, 0.3f).OnComplete(() => _aiComponent.maxSpeed = moveSpeed);
 
                 break;
@@ -119,7 +122,7 @@ public class Enemy : MonoBehaviour, IEnemy
     }
 
     protected void KillEnemy()
-    {   
+    {
         collider2D.enabled = false;
         StartCoroutine(KillAnimation());
     }
