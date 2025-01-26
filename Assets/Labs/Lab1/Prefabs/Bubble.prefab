@@ -101,7 +101,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _bubbleForce: 30
+  _damage: 0
   _minimunSize: 0.5
+  audiclips:
+  - {fileID: 8300000, guid: 4fb153f926c21454998d1981f1f76b48, type: 3}
+  - {fileID: 8300000, guid: 58c4887d911160f458e89e37cea62135, type: 3}
+  _maximunSize: 0
+  _blowTime: 0
+  _gumIcon: {fileID: 0}
+  _bubbleType: 0
 --- !u!50 &8908332766324450389
 Rigidbody2D:
   serializedVersion: 4

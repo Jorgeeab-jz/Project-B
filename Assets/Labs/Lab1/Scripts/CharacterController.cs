@@ -62,7 +62,7 @@ public class CharacterController : MonoBehaviour
     private AudioSource _footstepAudioSource;
     private float _footstepTimer = 0f;
     [SerializeField] private float _footstepInterval = 0.3f; // Ajusta este valor para controlar la frecuencia de los pasos
-    [SerializeField] private AudioClip _footstepAudioClip; // Añade este campo en el inspector
+    [SerializeField] private AudioClip _footstepAudioClip; // Aï¿½ade este campo en el inspector
 
 
     #region Interface
@@ -272,7 +272,7 @@ public class CharacterController : MonoBehaviour
             var deceleration = _grounded ? _stats.GroundDeceleration : _stats.AirDeceleration;
             _frameVelocity.x = Mathf.MoveTowards(_frameVelocity.x, 0, deceleration * Time.fixedDeltaTime);
 
-            // Detener reproducción de pasos cuando no se mueve
+            // Detener reproducciï¿½n de pasos cuando no se mueve
             if (_footstepAudioSource != null)
             {
                 _footstepAudioSource.Stop();

@@ -66,7 +66,9 @@ public class Bubble : MonoBehaviour, IBubble
     public void Pop()
     {
         transform.DOKill();
+        SoundFXManager.instance.PlaySoundFXClip(audiclips[0], transform, 1);
         GameObject.Destroy(gameObject);
+        
     }
 
     public bool IsReady()
