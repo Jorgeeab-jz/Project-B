@@ -39,11 +39,12 @@ public class BubbleManager : MonoBehaviour
     // Methods
     private void RotateSelection(InputAction.CallbackContext context)
     {
+        _selectedBubble++;
+
         if (_selectedBubble == _selectableBubbleTypes.Length) _selectedBubble = 0;
 
         DisplaySelectedBubble(_selectedBubble);
 
-        _selectedBubble++;
     }
 
     private void DisplaySelectedBubble(int index) 

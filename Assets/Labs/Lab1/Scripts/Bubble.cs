@@ -7,10 +7,11 @@ using UnityEngine.InputSystem;
 public class Bubble : MonoBehaviour
 {
     [SerializeField] protected float _bubbleForce = 5f;
+    [SerializeField] private float _minimunSize;
     
     private Rigidbody2D _rb;
 
-
+    
     
 
     public void LaunchBubble(Vector2 direction)
@@ -18,6 +19,13 @@ public class Bubble : MonoBehaviour
         _rb = GetComponent<Rigidbody2D>();
 
         _rb.velocity = direction.normalized * _bubbleForce;
+
+        transform.SetParent(null);
+
+        if(Mathf.Abs(transform.localScale.x) < _minimunSize) 
+        {
+            PopBubble();
+        }
     }
 
     public void PopBubble()
